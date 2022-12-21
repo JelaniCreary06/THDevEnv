@@ -7,12 +7,11 @@ import java.util.Scanner;
 public class Shop
 {
   // constants
-  private static final int WATER_COST = 2;
-  private static final int ROPE_COST = 4;
-  private static final int MACHETE_COST = 6;
-  private static final int HORSE_COST = 12;
-  private static final int BOAT_COST = 20;
-  
+  private static  int waterCost = 2;
+  private static  int ropeCost = 4;
+  private static  int macheteCost = 6;
+  private static  int horseCost = 12;
+  private static  int boatCost = 20;
   // instance variables
   private double markdown;
   private Hunter customer;
@@ -22,6 +21,20 @@ public class Shop
   {
     this.markdown = markdown;
     customer = null;
+  }
+  /**
+* This constructor will determine if the user wants
+to enter a cheatmode, a cheatmode will make every item cost 1 gold.
+*/
+  public Shop(double markdown, boolean cheatMode)
+  {
+    this.markdown = markdown;
+    customer = null;
+    waterCost = 1;
+    ropeCost  = 1;
+    macheteCost = 1;
+    horseCost = 1;
+    boatCost = 1;
   }
   
   /** method for entering the shop
@@ -85,11 +98,11 @@ public class Shop
   */
   public String inventory()
   {
-    String str = "Water: " + WATER_COST + " gold\n";
-    str += "Rope: " + ROPE_COST + " gold\n";
-    str += "Machete: " + MACHETE_COST + " gold\n";
-    str += "Horse: " + HORSE_COST + " gold\n";
-    str += "Boat: " + BOAT_COST + " gold\n";
+    String str = "Water: " + waterCost + " gold\n";
+    str += "Rope: " + ropeCost + " gold\n";
+    str += "Machete: " + macheteCost + " gold\n";
+    str += "Horse: " + horseCost + " gold\n";
+    str += "Boat: " + boatCost + " gold\n";
     
     return str;
   }
@@ -156,23 +169,23 @@ public class Shop
   {
     if (item.equals("Water"))
     {
-      return WATER_COST;
+      return waterCost;
     }
     else if (item.equals("Rope"))
     {
-      return ROPE_COST;
+      return ropeCost;
     }
     else if (item.equals("Machete"))
     {
-      return MACHETE_COST;
+      return macheteCost;
     }    
     else if (item.equals("Horse"))
     {
-      return HORSE_COST;
+      return horseCost;
     }
     else if (item.equals("Boat"))
     {
-      return BOAT_COST;
+      return boatCost;
     }
     else
     {        

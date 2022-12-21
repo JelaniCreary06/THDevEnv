@@ -2,14 +2,17 @@
 * The Town Class is where it all happens.
 * The Town is designed to manage all of the things a Hunter can do in town.
 */
+
+import java.lang.Math;
 public class Town
 {
   //instance variables
+  private TreasureHunter treasureHunter;
   private Hunter hunter;
   private Shop shop;
   private Terrain terrain;
   private String printMessage;
-  private boolean toughTown;
+  private boolean toughTown, treasureFound, cheatMode;
    
   //Constructor
   /**
@@ -17,8 +20,9 @@ public class Town
   * @param s The town's shoppe.
   * @param t The surrounding terrain.
   */
-  public Town(Shop shop, double toughness)
+  public Town(TreasureHunter treasureHunter, Shop shop, double toughness)
   {
+    this.treasureHunter = treasureHunter;
     this.shop = shop;
     this.terrain = getNewTerrain();
     
@@ -30,7 +34,18 @@ public class Town
     
     // higher toughness = more likely to be a tough town
     toughTown = (Math.random() < toughness);
+    treasureFound = false;
   }
+
+  /**
+* Initalizes a town class except this time with a cheat mode enabled.
+*/
+   public Town(TreasureHunter treasureHunter, Shop shop, double toughness, boolean cheatMode)
+  {
+    this(treasureHunter, shop, toughness);
+    this.cheatMode = cheatMode;
+  }
+  
   
   public String getLatestNews()
   {
@@ -102,7 +117,11 @@ public class Town
       noTroubleChance = 0.33;
     }
     
-    if (Math.random() > noTroubleChance)
+    if (cheatMode) {
+      printMessage = "Oomph!\nUhh!\nPow\n\nYou won the brawl and 100 gold!";
+      hunter.changeGold(100);
+    } else {
+      if (Math.random() > noTroubleChance)
     {
       printMessage = "You couldn't find any trouble";
     }
@@ -121,7 +140,10 @@ public class Town
         printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
         printMessage += "\nYou lost the brawl and pay " +  goldDiff + " gold.";
         hunter.changeGold(-1 * goldDiff);
+
+        if (!hunter.checkGold()) treasureHunter.gameOver();
       }
+    }
     }
   }
    
@@ -159,7 +181,19 @@ public class Town
       return new Terrain("Jungle", "Machete");
     }
   }
-  
+
+  /**
+* This method returns whether or not a treasure has been found in this town.
+*/
+  public boolean treasureFound() {
+    return this.treasureFound;
+  }
+/**
+* Sets the value of the boolean "treasureFound" to the input value.
+*/
+  public void treasureFound(boolean value) {
+    this.treasureFound = value;
+  }
   /**
   * Determines whether or not a used item has broken.
   * @return true if the item broke.

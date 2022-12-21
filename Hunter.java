@@ -2,12 +2,14 @@
 * Hunter Class<br /><br />
 * This class represents the treasure hunter character (the player) in the Treasure Hunt game.
 */
+import java.util.ArrayList;
 public class Hunter
 {
   //Keeps the items in the kit separate
   private static final String KIT_DELIMITER = ";";
   
   //instance variables
+  private ArrayList<String> treasureArray;
   private String hunterName;
   private String kit;
   private int gold;
@@ -23,7 +25,33 @@ public class Hunter
     this.hunterName = hunterName;
     kit = "";
     gold = startingGold;
+
+    treasureArray = new ArrayList<>();
   }
+
+  /**
+* Adds a specified treasure to the hunter's specific treasure list
+*/
+  public void addTreasure(String treasure) {
+    treasureArray.add(treasure);
+  }
+
+  /**
+* Checks the treasure array for a certain treasure, if the hunter has it it returns true
+*/
+  public boolean hasTreasure(String treasure) {
+    boolean hasTreasure = false;
+
+    for (int i = 0; i < treasureArray.size() && !hasTreasure; i++) {
+      if (treasureArray.get(i).equals(treasure)) hasTreasure = true;
+    }
+
+    return hasTreasure;
+  }
+  /**
+* @return Returns the hunters treasure array list.
+*/
+  public ArrayList<String> getHunterTreasures() { return this.treasureArray; }
    
   //Accessors
   public String getHunterName()
@@ -185,6 +213,31 @@ public class Hunter
     {
       str += " and " + getInventory();
     }
+    if (treasureArray.size() > 0) {
+      str += "\nTreasures: ";
+      for (int i = 0; i < treasureArray.size(); i++) {
+        str += treasureArray.get(i) + " ";
+      }
+    }
     return str;
   }
-}
+  /**
+  * a void method that checks if the game is over or not based on user's gold.
+  */
+  public void gameOver(TreasureHunter game){
+     game.play();
+    
+  }
+  /**
+  * the checkGold method will return false if user's gold 
+is equal to or less than zero, return true otherwise.
+  */
+    public boolean checkGold(){
+      if(gold<=0){
+        return false;
+      }
+      else{
+        return true;
+      }
+  }
+  }
