@@ -32,8 +32,9 @@ public class Town
     
     printMessage = "";
     
-    // higher toughness = more likely to be a tough town
-    toughTown = (Math.random() < toughness);
+    // higher toughness = more likely to be a tough town\
+    if (toughness <= 0.4) toughTown = false;
+    else toughTown = (Math.random() < toughness);
     treasureFound = false;
   }
 

@@ -16,7 +16,6 @@ public class TreasureHunter
   private Town currentTown;
   private Hunter hunter;
   private boolean hardMode, cheatMode, isGameOver;
-  private Scanner scanner;
   
   //Constructor
   /**
@@ -32,8 +31,6 @@ public class TreasureHunter
    treasureList[0] = "Excalibur";
     treasureList[1] = "Demon Spear";
     treasureList[2] = "Treasure 3";
-
-    scanner = new Scanner(System.in);
   }
 
   /** 
@@ -63,6 +60,8 @@ public class TreasureHunter
   */
   private void welcomePlayer()
   {
+    Scanner scanner = new Scanner(System.in);
+  
     System.out.println("Welcome to TREASURE HUNTER!");
     System.out.println("Going hunting for the big treasure, eh?");
     System.out.print("What's your name, Hunter? ");
@@ -71,15 +70,18 @@ public class TreasureHunter
     // set hunter instance variable
     hunter = new Hunter(name, 10);
     
-    System.out.print("Hard mode? (y/n): ");
+    System.out.print("Hard mode? (y/n) or Easy mode(E): ");
     String hard = scanner.nextLine();
     if (hard.equals("y") || hard.equals("Y")) 
     {
       hardMode = true;
     } else if (hard.equals("WASD")) cheatMode = true;
-
-    scanner.close();
+    else {
+      hardMode = false;
+      System.out.println("You're on easy mode.");
+    }
   }
+
 
   /**
 * Sets the boolean instance variable isGameOver to true
@@ -110,7 +112,12 @@ public class TreasureHunter
     if (cheatMode) {
       shop = new Shop(markdown, cheatMode);
       currentTown = new Town(this, shop, toughness, cheatMode);
-    } else {
+    } 
+      else if (!hardMode){
+        shop = new Shop(hardMode);
+        currentTown = new Town(this, shop, toughness);
+      }
+    else {
       shop = new Shop(markdown);
       currentTown = new Town(this, shop, toughness);
     }
@@ -144,6 +151,8 @@ public class TreasureHunter
     
     if (!isGameOver) {
        String choice = "";
+      Scanner scanner = new Scanner(System.in);
+      
       
       while (!(choice.equals("X") || choice.equals("x")))
     {
@@ -153,16 +162,14 @@ public class TreasureHunter
       System.out.println("***");
       System.out.println(hunter);
       System.out.println(currentTown);
-      System.out.println("(B)uy something at the shop.");
-      System.out.println("(S)ell something at the shop.");
-      System.out.println("(M)ove on to a different town.");
-      System.out.println("(L)ook for trouble!");
-      System.out.println("Give up the hunt and e(X)it.");
-      choice = scanner.nextLine();
-      System.out.println("input: " + choice);
-      if (!currentTown.treasureFound()) System.out.println("(H)unt for treasure!");
-      System.out.println();
+      System.out.println("|--------------------------------|\n| (B)uy something at the shop.   |");
+      System.out.println("| (S)ell something at the shop.  |");
+      System.out.println("| (M)ove on to a different town. |");
+      if (!currentTown.treasureFound()) System.out.println("| (H)unt for treasure!           |");
+      System.out.println("| (L)ook for trouble!            |");
+      System.out.println("| Give up the hunt and e(X)it.   |\n|--------------------------------|");
       System.out.print("What's your next move? ");
+      System.out.println();
       choice = scanner.nextLine();
       choice = choice.toUpperCase();
       processChoice(choice);
@@ -171,9 +178,7 @@ public class TreasureHunter
         scanner.nextLine();
       }
       TreasureHunter.clearScreen();
-       scanner.nextLine();
     }
-     
     }
      else {
       if (!hunter.checkGold()) {
@@ -215,9 +220,12 @@ public class TreasureHunter
     }
     else if (choice.equals("H") || choice.equals("h")) {
         if (!currentTown.treasureFound()) {
-          int chance = (int) (Math.random() * 2);
+          int chance;
 
-          if (chance == 0) System.out.println("You found nothing!");
+          if (!hardMode) chance = (int) (Math.random() * 2);
+          else chance = (int) (Math.random() * 4);
+
+          if (chance == 1 || chance == 2 || chance == 3) System.out.println("You found nothing!");
           else {
             String t = getRandomTreasure();
             currentTown.treasureFound(true);

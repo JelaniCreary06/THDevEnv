@@ -35,6 +35,18 @@ to enter a cheatmode, a cheatmode will make every item cost 1 gold.
     macheteCost = 1;
     horseCost = 1;
     boatCost = 1;
+  }/**
+* This constructor will turn on the easy mode for this game, it will
+set the price of all the items in the shop into half of its original price.
+*/
+  public Shop(boolean easyMode){
+    customer = null;
+    waterCost = 1;
+    ropeCost = 2;
+    macheteCost = 3;
+    horseCost = 6;
+    boatCost = 10;
+    
   }
   
   /** method for entering the shop
@@ -53,6 +65,7 @@ to enter a cheatmode, a cheatmode will make every item cost 1 gold.
       System.out.println(inventory());
       System.out.print("What're you lookin' to buy? ");
       String item = scanner.nextLine();
+      item.toUpperCase();
       int cost = checkMarketPrice(item, true);
       if (cost == 0)
       {
@@ -149,6 +162,7 @@ to enter a cheatmode, a cheatmode will make every item cost 1 gold.
   */
   public int checkMarketPrice(String item, boolean isBuying)
   {
+  
     if (isBuying)
     {
       return getCostOfItem(item);
@@ -167,23 +181,25 @@ to enter a cheatmode, a cheatmode will make every item cost 1 gold.
   */
   public int getCostOfItem(String item)
   {
-    if (item.equals("Water"))
+    item = item.toUpperCase();
+    
+    if (item.equals("WATER"))
     {
       return waterCost;
     }
-    else if (item.equals("Rope"))
+    else if (item.equals("ROPE"))
     {
       return ropeCost;
     }
-    else if (item.equals("Machete"))
+    else if (item.equals("MACHETE"))
     {
       return macheteCost;
     }    
-    else if (item.equals("Horse"))
+    else if (item.equals("HORSE"))
     {
       return horseCost;
     }
-    else if (item.equals("Boat"))
+    else if (item.equals("BOAT"))
     {
       return boatCost;
     }
